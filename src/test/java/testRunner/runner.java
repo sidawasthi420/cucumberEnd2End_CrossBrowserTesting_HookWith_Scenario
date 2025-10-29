@@ -12,10 +12,10 @@ import io.cucumber.testng.PickleWrapper;
 import io.cucumber.testng.TestNGCucumberRunner;
 
 @CucumberOptions(
-		features = "src/test/resources/features/test.feature",
+		features = {"src/test/resources/features/test.feature"},
 		glue = {"stepDefinition","hooks"},
-		plugin = {"pretty","html:target/cucumber-reports.html","json:target/cucumber-reports.json"},//,   pretty formats the test results in a human-readable format on the console
-		monochrome = true,   // to make console output more readable by removing unnecessary characters
+		plugin = {"pretty","html:target/cucumber-reports.html","json:target/cucumber-reports.json"},			//pretty formats the test results in a human-readable format on the console
+		monochrome = true,   																					// to make console output more readable by removing unnecessary characters
 		tags = "@ChromeBrowser"
 		)
 	
@@ -30,7 +30,7 @@ public class runner extends AbstractTestNGCucumberTests{
     }
 
     @Test( groups = "cucumber", description = "Runs Cucumber Feature", dataProvider = "features" )
-    public void feature( PickleWrapper pickleWrapper,FeatureWrapper cucumber Feature ) {
+    public void feature( PickleWrapper pickleWrapper, FeatureWrapper cucumberFeature ) {
         testNGCucumberRunner.runScenario( pickleWrapper.getPickle());
     }
 
