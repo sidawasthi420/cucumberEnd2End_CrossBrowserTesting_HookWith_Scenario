@@ -1,21 +1,44 @@
-pipeline {
-        agent any
-        stages {
-            stage('Checkout') {
-                steps {
-                    git 'https://github.com/your-username/your-repo.git' // Replace with your repo URL
+pipeline{
+
+    agent any
+
+    stages {
+
+        stage ('Compile Stage') {
+
+            steps {
+
+                withMaven(maven: 'maven_3_6_1') {
+                    sh 'mvn clean install'
+
                 }
+
             }
-            stage('Build and Test') {
-                steps {
-                    sh 'mvn clean install' // Or 'mvn clean test'
+        }
+    stage ('Test Stage') {
+
+            steps {
+
+                withMaven(maven: 'maven_3_6_1') {
+                    sh 'mvn test'
+
                 }
+
             }
-            stage('Cucumber Reports') {
-                steps {
-                    // Post-build action for Cucumber reports (requires Cucumber Reports plugin)
-                    cucumber 'target/cucumber-reports/*.json' // Adjust path as needed
-                }
+        }
+
+
+        stage ('Cucumber Reports') {
+
+            steps {
+                cucumber buildStatus: "UNSTABLE",
+                    fileIncludePattern: "**/cucumber.json",
+                    jsonReportDirectory: 'target'
+
             }
-        }
-    }
+
+        }
+
+    }
+
+}
